@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: FlawlessCICD
-Version: 0.1.0
+Version: 0.2.0
 Summary: 本地可使用的的CI/CD持续集成（Continuous Integration）和持续交付/部署（Continuous Delivery/Deployment），以最方便快捷的方式将本地项目部署到服务器上
 Home-page: https://github.com/799771344/FlawlessCICD
 Author: wen
@@ -25,6 +25,10 @@ Description-Content-Type: text/markdown
           host: ip
           username: 用户名
           password: 密码
+    安装：
+        pip install FlawlessCICD
+    使用：
+        
 
 
 # fix:
