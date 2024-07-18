@@ -12,9 +12,7 @@
           host: ip
           username: 用户名
           password: 密码
-    安装：
-        pip install FlawlessCICD
-    使用：
+    使用示例：test.py
         
 
 
