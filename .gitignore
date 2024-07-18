@@ -1,5 +1,5 @@
-build\
-dist\
-FlawlessCICD.egg-info\
+build/
+dist/
+FlawlessCICD.egg-info/
 setup.py
 .gitignore

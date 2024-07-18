@@ -1,4 +1,0 @@
-CD
-CI
-common
-conf
