@@ -1,3 +1,16 @@
+Metadata-Version: 2.1
+Name: FlawlessCICD
+Version: 0.1.0
+Summary: 本地可使用的的CI/CD持续集成（Continuous Integration）和持续交付/部署（Continuous Delivery/Deployment），以最方便快捷的方式将本地项目部署到服务器上
+Home-page: https://github.com/799771344/FlawlessCICD
+Author: wen
+Author-email: 799771344@qq.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10.0
+Description-Content-Type: text/markdown
+
 # FlawlessCICD是什么：
     本地可使用的的CI/CD持续集成（Continuous Integration）和持续交付/部署（Continuous Delivery/Deployment），以最方便快捷的方式将本地项目部署到服务器上
 
@@ -12,10 +25,6 @@
           host: ip
           username: 用户名
           password: 密码
-    安装：
-        pip install FlawlessCICD
-    使用：
-        
 
 
 # fix:

@@ -1,0 +1,15 @@
+README.md
+setup.py
+CD/CD.py
+CD/__init__.py
+CI/CI.py
+CI/__init__.py
+FlawlessCICD.egg-info/PKG-INFO
+FlawlessCICD.egg-info/SOURCES.txt
+FlawlessCICD.egg-info/dependency_links.txt
+FlawlessCICD.egg-info/requires.txt
+FlawlessCICD.egg-info/top_level.txt
+common/__init__.py
+common/file_path.py
+common/init_yaml.py
+conf/__init__.py
