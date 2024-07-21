@@ -27,14 +27,22 @@ class DeployServer:
         logger.error(stderr.read().decode())
 
     def stop_and_remove_container(self, ssh, container_name):
-        self.execute_command(ssh, f"docker stop {container_name}")
-        self.execute_command(ssh, f"docker rm {container_name}")
+        stop = f"docker stop {container_name}"
+        rm = f"docker rm {container_name}"
+        logger.info(f"ssh-stop: {stop}")
+        logger.info(f"ssh-rm: {rm}")
+        self.execute_command(ssh, stop)
+        self.execute_command(ssh, rm)
 
     def pull_latest_image(self, ssh, image_name):
-        self.execute_command(ssh, f"docker pull {image_name}")
+        pull = f"docker pull {image_name}"
+        logger.info(f"ssh-pull: {pull}")
+        self.execute_command(ssh, pull)
 
     def run_new_container(self, ssh, container_name, image_name, port_mapping):
-        self.execute_command(ssh, f"docker run -d --name {container_name} -p {port_mapping} {image_name}")
+        run = f"docker run -d -p {port_mapping} --name {container_name} {image_name}"
+        logger.info(f"ssh-run: {run}")
+        self.execute_command(ssh, run)
 
     def deploy_to_server(self, image_name, container_name, port_mapping):
         ssh = self.connect_to_server()

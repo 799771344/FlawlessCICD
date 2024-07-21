@@ -81,12 +81,15 @@ class DeployDocker:
 
     def get_latest_version(self, repository):
         try:
-            tags = self.client.images.list(name=f"{self.remote_docker_url}/{repository}")
+            logger.info(f"{self.remote_docker_url}/{repository}")
+            tags = self.client.images.list(name=f"{repository}")
+            logger.info(tags)
             if not tags:
                 return "v0"
             image_tags = tags[0].tags
             if not image_tags:
                 return "v0"
+            logger.info(image_tags)
             version = image_tags[-1].split(':')[-1]
             if version:
                 return f"v{version}"
@@ -96,9 +99,40 @@ class DeployDocker:
             logger.error(f"获取最新版本时发生错误: {str(e)}")
             return "v0"
 
+    def get_all_versions(self, repository):
+        try:
+            images = self.client.images.list(name=f"{self.remote_docker_url}/{repository}")
+            versions = []
+            for image in images:
+                for tag in image.tags:
+                    version = tag.split(':')[-1]
+                    if version.startswith('v'):
+                        versions.append(version)
+            return sorted(versions, key=lambda x: int(x[1:]), reverse=True)
+        except APIError as e:
+            logger.error(f"获取所有版本时发生错误: {str(e)}")
+            return []
+
+    def remove_old_versions(self, repository, keep=1):
+        versions = self.get_all_versions(repository)
+        if len(versions) <= keep:
+            return
+
+        for version in versions[keep:]:
+            try:
+                image_name = f"{self.remote_docker_url}/{repository}:{version}"
+                self.client.images.remove(image_name, force=True)
+                logger.info(f"已删除旧版本镜像: {image_name}")
+            except ImageNotFound:
+                logger.warning(f"未找到镜像: {image_name}")
+            except APIError as e:
+                logger.error(f"删除镜像 {image_name} 时发生错误: {str(e)}")
+
     def increment_version(self, version):
-        version_num = int(version.replace("v", ""))
-        return f"v{version_num + 1}"
+        version_num = version.replace("v", "")
+        if version_num == "latest":
+            return "v1"
+        return f"v{int(version_num) + 1}"
 
     def login_registry(self):
         try:
@@ -175,6 +209,9 @@ class DeployDocker:
         if not full_tag:
             logger.error("推送镜像失败,部署终止")
             return
+
+        # 删除旧版本镜像
+        self.remove_old_versions(repository, keep=1)
 
         # 更新Kubernetes部署
         # if self.update_deployment(full_tag):
