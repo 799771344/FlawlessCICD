@@ -5,3 +5,4 @@ FlawlessCICD.egg-info/
 setup.py
 .gitignore
 test.py
+conf/
