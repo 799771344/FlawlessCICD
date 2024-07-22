@@ -72,7 +72,7 @@ class DeployDocker:
         try:
             image = self.client.images.get(image_id)
             full_tag = f"{self.remote_docker_url}/{repository}:{tag}"
-            image.tag(full_tag)
+            image.tag(full_tag, tag=tag)
             logger.info(f"成功为镜像打标签: {full_tag}")
         except ImageNotFound:
             logger.error(f"未找到镜像 ID: {image_id}")
@@ -82,7 +82,7 @@ class DeployDocker:
     def get_latest_version(self, repository):
         try:
             logger.info(f"{self.remote_docker_url}/{repository}")
-            tags = self.client.images.list(name=f"{repository}")
+            tags = self.client.images.list(name=repository)
             logger.info(tags)
             if not tags:
                 return "v0"
