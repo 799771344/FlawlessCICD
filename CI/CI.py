@@ -42,18 +42,22 @@ class DeployDocker:
 
     def check_and_remove_image(self):
         try:
-            image = self.client.images.get(self.app_name)
-            print(image)
-            logger.info(f"找到镜像 {self.app_name}")
-            # self.client.images.remove(image.id, force=True)
-            logger.info(f"已删除镜像 {self.app_name}")
+            images = self.client.images.list(name=self.app_name)
+            for image in images:
+                if f'{self.app_name}:latest' in image.tags:
+                    logger.info(f"找到镜像 {self.app_name}")
+                    self.client.images.remove(image.tags[0], force=True)
+                    logger.info(f"已删除镜像 {self.app_name}")
+                    break
+                else:
+                    logger.info(f"未找到镜像 {self.app_name}")
         except ImageNotFound:
             logger.info(f"未找到镜像 {self.app_name}")
         except APIError as e:
             logger.error(f"删除镜像时发生错误: {str(e)}")
 
     def docker_build(self):
-        # self.check_and_remove_image()
+        self.check_and_remove_image()
         try:
             image, build_logs = self.client.images.build(
                 path=self.file_path,
@@ -220,7 +224,7 @@ class DeployDocker:
         # else:
         #     logger.error("部署失败")
 
-        # return full_tag
+        return full_tag
 
 
 def main():
