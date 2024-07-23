@@ -43,8 +43,9 @@ class DeployDocker:
     def check_and_remove_image(self):
         try:
             image = self.client.images.get(self.app_name)
+            print(image)
             logger.info(f"找到镜像 {self.app_name}")
-            self.client.images.remove(image.id, force=True)
+            # self.client.images.remove(image.id, force=True)
             logger.info(f"已删除镜像 {self.app_name}")
         except ImageNotFound:
             logger.info(f"未找到镜像 {self.app_name}")
@@ -52,7 +53,7 @@ class DeployDocker:
             logger.error(f"删除镜像时发生错误: {str(e)}")
 
     def docker_build(self):
-        self.check_and_remove_image()
+        # self.check_and_remove_image()
         try:
             image, build_logs = self.client.images.build(
                 path=self.file_path,
@@ -191,7 +192,7 @@ class DeployDocker:
         # 运行静态代码分析
         # if not self.static_code_analysis():
         #     logger.warning("静态代码分析发现问题,但继续部署")
-
+        # self.check_and_remove_image()
         # 构建镜像
         image_id = self.docker_build()
         if not image_id:
@@ -211,7 +212,7 @@ class DeployDocker:
             return
 
         # 删除旧版本镜像
-        self.remove_old_versions(repository, keep=1)
+        # self.remove_old_versions(repository, keep=1)
 
         # 更新Kubernetes部署
         # if self.update_deployment(full_tag):
@@ -219,7 +220,7 @@ class DeployDocker:
         # else:
         #     logger.error("部署失败")
 
-        return full_tag
+        # return full_tag
 
 
 def main():
